@@ -31,35 +31,6 @@ Each lab assignment is maintained on its own **dedicated branch** (`Lab-1` throu
 | **[Lab-10](https://github.com/Reno07Matthew/ML-lab-2547145/tree/Lab-10)** | **Multilayer Perceptron (MLP) — XOR Problem** | Non-linear classification with neural networks, backpropagation implemented in Keras, PyTorch, and TensorFlow | Synthetic XOR Truth Table |
 
 ---
-
-## 🛠️ How to Switch Between Labs
-
-### 1. View on GitHub
-Click on any of the branch links in the table above, or select the branch from the **Branch dropdown menu** on GitHub:
-- `Lab-1`
-- `Lab-2`
-- `Lab-3`
-- `Lab-4`
-- `Lab-5`
-- `Lab-6`
-- `Lab-7`
-- `Lab-8`
-- `Lab-9`
-- `Lab-10`
-
-### 2. Switch Locally via Git
-```bash
-# Fetch all remote branches
-git fetch origin
-
-# Switch to a specific lab branch
-git checkout Lab-1
-# or
-git checkout Lab-2
-```
-
----
-
 ## ⚙️ Tech Stack & Requirements
 
 - **Language:** Python 3.x
