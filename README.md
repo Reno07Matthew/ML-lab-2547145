@@ -2,14 +2,14 @@
 
 **Student Name:** Reno Matthew  
 **Register No:** 2547145  
-**Course:** Master of Computer Applications (MCA)  
-**Subject:** Machine Learning Laboratory  
+**Class:** 4 MCA A 
+**Subject:** Machine Learning Lab  
 
 ---
 
 ## 📌 Repository Overview
 
-This repository contains all lab programs, datasets, exploratory analyses, model implementations, and reports completed as part of the **Machine Learning Laboratory** course.
+This repository contains all lab programs, datasets, exploratory analyses, model implementations, and reports completed as part of the **Machine Learning Lab**.
 
 Each lab assignment is maintained on its own **dedicated branch** (`Lab-1` through `Lab-10`) containing the relevant Jupyter notebooks, datasets, reports, and visualization outputs.
 
