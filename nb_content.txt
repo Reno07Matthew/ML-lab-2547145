@@ -1,0 +1,399 @@
+
+--- Cell 1 (markdown) ---
+# Lab 6: Comparison of Logistic Regression and K-Nearest Neighbors (KNN) Classifiers
+
+**Aim:** To implement Logistic Regression and KNN classifiers on the Breast Cancer Wisconsin (Diagnostic) dataset and compare their performance using standard classification evaluation metrics.
+
+**Dataset:** Breast Cancer Wisconsin (Diagnostic) — UCI ML Repository (`wdbc.data`)
+
+**Name:** Reno Reji Matthew(2547145)
+
+--- Cell 2 (markdown) ---
+## 1. Import Libraries
+
+--- Cell 3 (code) ---
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LogisticRegression
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import (accuracy_score, precision_score, recall_score,
+                             f1_score, confusion_matrix, classification_report)
+
+pd.set_option('display.max_columns', None)
+
+--- Cell 4 (markdown) ---
+## 2. Load the Dataset
+
+The file `wdbc.data` has no header row. As per `wdbc.names`, column 1 is the ID, column 2 is the diagnosis (M = malignant, B = benign), and columns 3-32 are 30 real-valued features (mean, standard error and worst of 10 base measurements).
+
+--- Cell 5 (code) ---
+base_features = ['radius', 'texture', 'perimeter', 'area', 'smoothness',
+                 'compactness', 'concavity', 'concave_points', 'symmetry', 'fractal_dimension']
+columns = ['id', 'diagnosis'] + [f'{f}_{suffix}' for suffix in ['mean', 'se', 'worst'] for f in base_features]
+
+df = pd.read_csv('wdbc.data', header=None, names=columns)
+print('Shape:', df.shape)
+df.head()
+
+--- Cell 6 (markdown) ---
+## 3. Exploratory Data Analysis
+
+--- Cell 7 (code) ---
+df.info()
+
+--- Cell 8 (code) ---
+# Class distribution
+print(df['diagnosis'].value_counts())
+print()
+print(df['diagnosis'].value_counts(normalize=True).round(4))
+
+sns.countplot(x='diagnosis', data=df)
+plt.title('Class Distribution (M = Malignant, B = Benign)')
+plt.show()
+
+--- Cell 9 (code) ---
+df.describe()
+
+--- Cell 10 (code) ---
+# Check for missing values and duplicates
+print('Total missing values:', df.isnull().sum().sum())
+print('Duplicate rows:', df.duplicated().sum())
+
+--- Cell 11 (code) ---
+# Correlation heatmap of the 'mean' features
+mean_cols = [f'{f}_mean' for f in base_features]
+plt.figure(figsize=(9, 7))
+sns.heatmap(df[mean_cols].corr(), annot=True, fmt='.2f', cmap='coolwarm')
+plt.title('Correlation of Mean Features')
+plt.show()
+
+--- Cell 12 (markdown) ---
+## 4. Data Preprocessing
+
+- Drop the `id` column (identifier, no predictive value).
+- Encode the target: M (Malignant) = 1, B (Benign) = 0.
+- Standardize the features, since both Logistic Regression and KNN are sensitive to feature scale.
+
+--- Cell 13 (code) ---
+X = df.drop(['id', 'diagnosis'], axis=1)
+y = df['diagnosis'].map({'M': 1, 'B': 0})
+
+print('Features:', X.shape)
+print('Target distribution:\n', y.value_counts())
+
+--- Cell 14 (markdown) ---
+## 5. Train-Test Split
+
+An 80:20 stratified split is used so that the class proportions are preserved in both sets.
+
+--- Cell 15 (code) ---
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42, stratify=y)
+
+print('Training set:', X_train.shape)
+print('Testing set :', X_test.shape)
+
+--- Cell 16 (code) ---
+scaler = StandardScaler()
+X_train_scaled = scaler.fit_transform(X_train)
+X_test_scaled = scaler.transform(X_test)
+
+--- Cell 17 (markdown) ---
+## 6. Logistic Regression Classifier
+
+--- Cell 18 (code) ---
+log_reg = LogisticRegression(max_iter=5000, random_state=42)
+log_reg.fit(X_train_scaled, y_train)
+
+y_pred_lr = log_reg.predict(X_test_scaled)
+print(classification_report(y_test, y_pred_lr, target_names=['Benign', 'Malignant']))
+
+--- Cell 19 (markdown) ---
+### 6.1 Model Parameters (Intercept and Coefficients)
+
+Logistic Regression learns one coefficient per feature plus an intercept. The linear combination is $z = \beta_0 + \beta_1 x_1 + \dots + \beta_{30} x_{30}$.
+
+--- Cell 20 (code) ---
+print('Intercept:')
+print(log_reg.intercept_)
+
+print('\nCoefficients:')
+print(log_reg.coef_)
+
+--- Cell 21 (code) ---
+# Ten most influential features by absolute coefficient value
+coef_df = pd.DataFrame({'feature': X.columns, 'coefficient': log_reg.coef_[0]})
+coef_df['abs'] = coef_df['coefficient'].abs()
+top10 = coef_df.sort_values('abs', ascending=False).head(10)
+
+plt.figure(figsize=(8, 4))
+sns.barplot(x='coefficient', y='feature', data=top10, palette='vlag')
+plt.title('Top 10 Features by |Coefficient| (Logistic Regression)')
+plt.axvline(0, color='black', linewidth=0.8)
+plt.tight_layout()
+plt.show()
+
+--- Cell 22 (markdown) ---
+### 6.2 Predicted Probabilities
+
+Logistic Regression outputs a probability for each class. Column 0 = P(Benign), column 1 = P(Malignant).
+
+--- Cell 23 (code) ---
+probability = log_reg.predict_proba(X_test_scaled)
+
+print('Predicted probabilities (first 5 test samples):')
+print(probability[:5])
+print('\nPredicted labels :', y_pred_lr[:5])
+print('Actual labels    :', y_test[:5].values)
+
+--- Cell 24 (markdown) ---
+### 6.3 Manual Verification of the Sigmoid Computation
+
+For a single test sample we compute $z$ by hand and pass it through the sigmoid $\sigma(z) = \dfrac{1}{1 + e^{-z}}$ to confirm it matches `predict_proba`.
+
+--- Cell 25 (code) ---
+sample = X_test_scaled[0]
+
+z = np.dot(log_reg.coef_, sample) + log_reg.intercept_
+print('z value:', z)
+
+prob = 1 / (1 + np.exp(-z))
+print('Probability (Malignant):', prob)
+print('From predict_proba     :', probability[0, 1])
+
+--- Cell 26 (markdown) ---
+### 6.4 Visualizing the Sigmoid Function
+
+The sigmoid maps the z-value to a probability between 0 and 1. The dashed lines mark the sample computed above.
+
+--- Cell 27 (code) ---
+def sigmoid(z):
+    return 1 / (1 + np.exp(-z))
+
+z_values = np.linspace(-8, 8, 200)
+
+plt.figure(figsize=(9, 5))
+plt.plot(z_values, sigmoid(z_values), label='Sigmoid Function')
+plt.scatter(z, prob, color='red', s=100, zorder=5,
+            label=f'Example Point (z={z[0]:.2f}, p={prob[0]:.2f})')
+plt.axvline(x=z[0], color='gray', linestyle='--', linewidth=0.8)
+plt.axhline(y=prob[0], color='gray', linestyle='--', linewidth=0.8)
+plt.axhline(y=0.5, color='green', linestyle=':', linewidth=1, label='Decision threshold (0.5)')
+plt.title('Sigmoid Function (Logistic Regression Activation)')
+plt.xlabel('z (linear combination of features and coefficients)')
+plt.ylabel('Probability (p)')
+plt.grid(True, linestyle='--', alpha=0.6)
+plt.legend()
+plt.tight_layout()
+plt.show()
+
+--- Cell 28 (markdown) ---
+## 7. K-Nearest Neighbors (KNN) Classifier
+
+The value of *k* is chosen by comparing test accuracy over a range of values.
+
+--- Cell 29 (code) ---
+k_range = range(1, 21)
+accuracies = []
+for k in k_range:
+    knn_tmp = KNeighborsClassifier(n_neighbors=k)
+    knn_tmp.fit(X_train_scaled, y_train)
+    accuracies.append(accuracy_score(y_test, knn_tmp.predict(X_test_scaled)))
+
+plt.plot(k_range, accuracies, marker='o')
+plt.xlabel('k (number of neighbors)')
+plt.ylabel('Test Accuracy')
+plt.title('Choosing k for KNN')
+plt.xticks(k_range)
+plt.grid(True)
+plt.show()
+
+best_k = k_range[int(np.argmax(accuracies))]
+print('Best k =', best_k, 'with accuracy =', round(max(accuracies), 4))
+
+--- Cell 30 (code) ---
+knn = KNeighborsClassifier(n_neighbors=best_k)
+knn.fit(X_train_scaled, y_train)
+
+y_pred_knn = knn.predict(X_test_scaled)
+print(classification_report(y_test, y_pred_knn, target_names=['Benign', 'Malignant']))
+
+--- Cell 31 (markdown) ---
+## 8. Evaluation
+
+### 8.1 Confusion Matrices
+
+--- Cell 32 (code) ---
+cm_lr = confusion_matrix(y_test, y_pred_lr)
+cm_knn = confusion_matrix(y_test, y_pred_knn)
+
+fig, axes = plt.subplots(1, 2, figsize=(11, 4))
+for ax, cm, title in zip(axes, [cm_lr, cm_knn], ['Logistic Regression', f'KNN (k={best_k})']):
+    sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', cbar=False, ax=ax,
+                xticklabels=['Benign', 'Malignant'], yticklabels=['Benign', 'Malignant'])
+    ax.set_title(title)
+    ax.set_xlabel('Predicted')
+    ax.set_ylabel('Actual')
+plt.tight_layout()
+plt.show()
+
+print('Logistic Regression:\n', cm_lr)
+print('\nKNN:\n', cm_knn)
+
+--- Cell 33 (markdown) ---
+### 8.2 Comparison Table
+
+--- Cell 34 (code) ---
+def get_metrics(y_true, y_pred):
+    return {
+        'Accuracy': accuracy_score(y_true, y_pred),
+        'Precision': precision_score(y_true, y_pred),
+        'Recall': recall_score(y_true, y_pred),
+        'F1 Score': f1_score(y_true, y_pred),
+    }
+
+comparison = pd.DataFrame({
+    'Logistic Regression': get_metrics(y_test, y_pred_lr),
+    f'KNN (k={best_k})': get_metrics(y_test, y_pred_knn),
+}).T.round(4)
+
+comparison
+
+--- Cell 35 (code) ---
+comparison.plot(kind='bar', figsize=(9, 4), ylim=(0.8, 1.02), rot=0)
+plt.title('Performance Comparison: Logistic Regression vs KNN')
+plt.ylabel('Score')
+plt.legend(loc='lower right')
+plt.show()
+
+--- Cell 36 (markdown) ---
+## 9. Logistic Regression Implemented from Scratch (Gradient Descent)
+
+To understand what Scikit-Learn does internally, the same classifier is implemented manually:
+
+1. Initialize weights and bias to zero
+2. Compute the linear combination $z = Xw + b$
+3. Apply the sigmoid activation to get probabilities
+4. Compute the Binary Cross-Entropy (log) loss
+5. Compute gradients of the loss w.r.t. $w$ and $b$
+6. Update the parameters in the opposite direction of the gradients
+7. Repeat until convergence, then threshold at 0.5 to get labels
+
+--- Cell 37 (code) ---
+class BreastCancerLogisticRegression:
+    def __init__(self, learning_rate=0.1, epochs=1000, tolerance=1e-6):
+        self.lr = learning_rate
+        self.epochs = epochs
+        self.tolerance = tolerance
+        self.weights = None
+        self.bias = None
+        self.loss_history = []
+
+    def _sigmoid(self, z):
+        # Step 3: Sigmoid activation - maps any z to the (0, 1) probability scale
+        return 1 / (1 + np.exp(-np.clip(z, -250, 250)))  # clip to prevent numeric overflow
+
+    def fit(self, X, y):
+        n_samples, n_features = X.shape
+
+        # Step 1: Parameter initialization
+        self.weights = np.zeros(n_features)
+        self.bias = 0.0
+
+        # Step 6: Iterative optimization loop
+        for epoch in range(self.epochs):
+            # Step 2: Linear combination (z = Xw + b)
+            z = np.dot(X, self.weights) + self.bias
+
+            # Step 3: Activation
+            y_pred = self._sigmoid(z)
+
+            # Step 4: Binary Cross-Entropy loss
+            eps = 1e-15
+            y_pred_clipped = np.clip(y_pred, eps, 1 - eps)
+            loss = -(1 / n_samples) * np.sum(y * np.log(y_pred_clipped) + (1 - y) * np.log(1 - y_pred_clipped))
+            self.loss_history.append(loss)
+
+            # Step 5: Gradient descent update
+            dw = (1 / n_samples) * np.dot(X.T, (y_pred - y))
+            db = (1 / n_samples) * np.sum(y_pred - y)
+
+            self.weights -= self.lr * dw
+            self.bias -= self.lr * db
+
+            # Stop early if the loss reduction becomes negligible
+            if epoch > 0 and abs(self.loss_history[-2] - self.loss_history[-1]) < self.tolerance:
+                print(f"-> Model converged early at epoch {epoch}!")
+                break
+
+    def predict_prob(self, X):
+        z = np.dot(X, self.weights) + self.bias
+        return self._sigmoid(z)
+
+    def predict(self, X, threshold=0.5):
+        # Step 7: Decision boundary - 1 (Malignant) if probability >= 0.5, else 0 (Benign)
+        return np.where(self.predict_prob(X) >= threshold, 1, 0)
+
+--- Cell 38 (code) ---
+custom_model = BreastCancerLogisticRegression(learning_rate=0.01, epochs=10000, tolerance=1e-7)
+custom_model.fit(X_train_scaled, y_train.values)
+
+y_pred_custom = custom_model.predict(X_test_scaled)
+print('Accuracy (from scratch):', round(accuracy_score(y_test, y_pred_custom), 4))
+print('Accuracy (Scikit-Learn):', round(accuracy_score(y_test, y_pred_lr), 4))
+print()
+print(classification_report(y_test, y_pred_custom, target_names=['Benign', 'Malignant']))
+
+--- Cell 39 (code) ---
+plt.figure(figsize=(9, 5))
+plt.plot(custom_model.loss_history, color='#16a34a', linewidth=2.5)
+plt.title('Loss Minimization Curve (Log Loss)', fontsize=14, fontweight='bold')
+plt.xlabel('Epochs', fontsize=12)
+plt.ylabel('Binary Cross-Entropy Loss', fontsize=12)
+plt.grid(True, linestyle='--', alpha=0.6)
+plt.tight_layout()
+plt.show()
+
+print('Initial loss:', round(custom_model.loss_history[0], 4))
+print('Final loss  :', round(custom_model.loss_history[-1], 4))
+print('Epochs run  :', len(custom_model.loss_history))
+
+--- Cell 40 (code) ---
+# Confusion matrix of the from-scratch model
+plt.figure(figsize=(5, 4))
+sns.heatmap(confusion_matrix(y_test, y_pred_custom), annot=True, fmt='d', cmap='Greens', cbar=False,
+            xticklabels=['Benign', 'Malignant'], yticklabels=['Benign', 'Malignant'])
+plt.title('Confusion Matrix - Logistic Regression (from scratch)')
+plt.xlabel('Predicted')
+plt.ylabel('Actual')
+plt.tight_layout()
+plt.show()
+
+--- Cell 41 (code) ---
+# Three-way comparison including the manual implementation
+full_comparison = pd.DataFrame({
+    'Logistic Regression (sklearn)': get_metrics(y_test, y_pred_lr),
+    'Logistic Regression (scratch)': get_metrics(y_test, y_pred_custom),
+    f'KNN (k={best_k})': get_metrics(y_test, y_pred_knn),
+}).T.round(4)
+
+full_comparison
+
+--- Cell 42 (markdown) ---
+## 10. Result and Interpretation
+
+--- Cell 43 (code) ---
+for metric in comparison.columns:
+    lr_val, knn_val = comparison.loc['Logistic Regression', metric], comparison.loc[f'KNN (k={best_k})', metric]
+    winner = 'Logistic Regression' if lr_val > knn_val else ('KNN' if knn_val > lr_val else 'Tie')
+    print(f'{metric:10s}: LR = {lr_val:.4f} | KNN = {knn_val:.4f} -> {winner}')
+
+--- Cell 44 (markdown) ---
+### Interpretation
+
+Logestic Performed slightly better than KNN , because Logestic's is more sutable classifier for this particular dataset because it is better in superior classification metrics and logestic is best for these perdictions.
