@@ -1,0 +1,20 @@
+field,role,feature_config,data_type,description,cleaning
+_MICHD,target,neither,binary,Previously reported CHD or MI,1 -> positive; 2 -> negative; blank excluded
+_AGE80,predictor,both,numeric,"Imputed age, restricted to 18-39",Training-fold median imputation and scaling
+_SEX,predictor,both,categorical,Calculated sex variable,Training-fold categorical missing category
+GENHLTH,predictor,both,categorical,Self-rated general health,Training-fold categorical missing category
+PHYSHLTH,predictor,both,numeric,Physical-health days not good in past 30 days,88 -> 0; 77/99 -> missing; then training-fold median imputation and scaling
+MENTHLTH,predictor,both,numeric,Mental-health days not good in past 30 days,88 -> 0; 77/99 -> missing; then training-fold median imputation and scaling
+EXERANY2,predictor,both,categorical,Any exercise in past 30 days,Training-fold categorical missing category
+_BMI5,predictor,both,numeric,Computed BMI with two implied decimal places,Divide by 100; training-fold median imputation and scaling
+_SMOKER3,predictor,both,categorical,Computed smoking status,Training-fold categorical missing category
+DRNKANY6,predictor,both,categorical,Any alcohol in past 30 days,Training-fold categorical missing category
+_TOTINDA,predictor,both,categorical,Computed leisure-time physical activity,Training-fold categorical missing category
+_EDUCAG,predictor,both,categorical,Computed education category,Training-fold categorical missing category
+_INCOMG1,predictor,both,categorical,Computed income category,Training-fold categorical missing category
+BPHIGH6,predictor,extended_low_cost,categorical,History of high blood pressure,Training-fold categorical missing category
+cholesterol_status,predictor,extended_low_cost,categorical,CHOLCHK3/TOLDHI3 skip-logic status,Deterministic official skip logic; no ordinary imputation
+DIABETE4,predictor,extended_low_cost,categorical,Diabetes history,Training-fold categorical missing category
+CHCKDNY2,predictor,extended_low_cost,categorical,Kidney-disease history,Training-fold categorical missing category
+DIFFWALK,predictor,extended_low_cost,categorical,Serious difficulty walking/climbing stairs,Training-fold categorical missing category
+_LLCPWT,EDA survey weight only,neither,numeric,Final BRFSS survey weight,Never supplied to a predictor pipeline

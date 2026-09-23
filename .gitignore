@@ -1,0 +1,10 @@
+.venv/
+.cache/
+LLCP2023.csv
+LLCP2023.XPT
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.catboost_info/
+.artifacts/
+*.inspect.ndjson

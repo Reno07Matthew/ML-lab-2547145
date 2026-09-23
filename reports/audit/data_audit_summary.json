@@ -1,0 +1,66 @@
+{
+  "project_phase": "initial_data_audit_only_no_modelling",
+  "dataset_file": "LLCP2023.csv",
+  "dataset_format": "csv",
+  "codebook_file": "USCODE23_LLCP_021924.HTML",
+  "total_rows": 433323,
+  "total_columns_in_dataset": 350,
+  "young_age_18_39_rows": 99690,
+  "young_rows_with_valid_target": 99114,
+  "young_rows_excluded_for_missing_target": 576,
+  "young_missing_target_source_code_combinations": {
+    "CVDINFR4=2, CVDCRHD4=7": 198,
+    "CVDINFR4=2, CVDCRHD4=9": 10,
+    "CVDINFR4=7, CVDCRHD4=2": 280,
+    "CVDINFR4=7, CVDCRHD4=7": 77,
+    "CVDINFR4=9, CVDCRHD4=2": 3,
+    "CVDINFR4=9, CVDCRHD4=9": 8
+  },
+  "positive_n": 1050,
+  "negative_n": 98064,
+  "positive_pct": 1.059386,
+  "negative_pct": 98.940614,
+  "survey_weighted_positive_pct": 1.169218,
+  "positive_to_negative_ratio": 0.010707,
+  "duplicate_composite_state_seqno": 0,
+  "selected_columns_available": {
+    "_AGE80": true,
+    "SEXVAR": true,
+    "EXERANY2": true,
+    "_SMOKER3": true,
+    "DRNKANY6": true,
+    "_RFBING6": true,
+    "_RFDRHV8": true,
+    "_BMI5": true,
+    "GENHLTH": true,
+    "PHYSHLTH": true,
+    "MENTHLTH": true,
+    "BPHIGH6": true,
+    "TOLDHI3": true,
+    "CVDSTRK3": true,
+    "CHCKDNY2": true,
+    "DIABETE4": true
+  },
+  "explicitly_excluded_predictors": [
+    "CVDINFR4",
+    "CVDCRHD4",
+    "HASYMP1",
+    "HASYMP2",
+    "HASYMP3",
+    "HASYMP4",
+    "HASYMP5",
+    "HASYMP6"
+  ],
+  "target_derivation_mismatches": 0,
+  "full_target_counts_match_official_codebook": true,
+  "full_target_counts_observed": {
+    "1": 36311,
+    "2": 392427,
+    "missing": 4585
+  },
+  "full_target_counts_official": {
+    "1": 36311,
+    "2": 392427,
+    "missing": 4585
+  }
+}

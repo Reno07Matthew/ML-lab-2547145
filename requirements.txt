@@ -1,0 +1,15 @@
+catboost==1.2.8
+imbalanced-learn==0.14.0
+joblib==1.5.2
+jupyter==1.1.1
+matplotlib==3.10.6
+nbformat==5.10.4
+numpy==2.2.6
+pandas==2.3.3
+pdfplumber==0.11.9
+pypdf==6.10.0
+reportlab==4.4.9
+scikit-learn==1.7.2
+seaborn==0.13.2
+shap==0.48.0
+streamlit==1.49.1

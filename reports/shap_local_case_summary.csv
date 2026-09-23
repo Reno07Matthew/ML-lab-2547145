@@ -1,0 +1,5 @@
+case_type,reported_outcome,predicted_class,screening_score,selection_rule
+TP,1,1,0.9101684218547416,closest to median score within outcome type
+TN,0,0,0.3098842952641219,closest to median score within outcome type
+FP,0,1,0.8568211144624003,closest to median score within outcome type
+FN,1,0,0.5021710137681664,closest to median score within outcome type

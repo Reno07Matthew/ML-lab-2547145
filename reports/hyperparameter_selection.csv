@@ -1,0 +1,17 @@
+feature_config,model,params,validation_pr_auc,validation_roc_auc
+lifestyle_only,logistic_regression,"{""C"": 0.1}",0.05375933067407926,0.7589936219132528
+lifestyle_only,logistic_regression,"{""C"": 1.0}",0.05471428538112416,0.7552139668408769
+lifestyle_only,random_forest,"{""max_depth"": 12, ""min_samples_leaf"": 4, ""n_estimators"": 160}",0.0436848475309616,0.7345280518906935
+lifestyle_only,random_forest,"{""max_depth"": null, ""min_samples_leaf"": 3, ""n_estimators"": 240}",0.036565305062558916,0.7148256959388951
+lifestyle_only,catboost,"{""depth"": 5, ""iterations"": 160, ""learning_rate"": 0.08}",0.04339387374651812,0.7532810558266616
+lifestyle_only,catboost,"{""depth"": 7, ""iterations"": 240, ""learning_rate"": 0.06}",0.0373049591233988,0.7570399269096373
+lifestyle_only,extra_trees,"{""max_depth"": 14, ""min_samples_leaf"": 3, ""n_estimators"": 160}",0.043207900924444535,0.7368686321969976
+lifestyle_only,extra_trees,"{""max_depth"": null, ""min_samples_leaf"": 2, ""n_estimators"": 240}",0.028891821531138576,0.7130122928637307
+extended_low_cost,logistic_regression,"{""C"": 0.1}",0.08449758925167217,0.7962818308962661
+extended_low_cost,logistic_regression,"{""C"": 1.0}",0.08310316315414686,0.7942930629105379
+extended_low_cost,random_forest,"{""max_depth"": 12, ""min_samples_leaf"": 4, ""n_estimators"": 160}",0.08043626662583384,0.7758442413194371
+extended_low_cost,random_forest,"{""max_depth"": null, ""min_samples_leaf"": 3, ""n_estimators"": 240}",0.06953997063662928,0.7507170476343057
+extended_low_cost,catboost,"{""depth"": 5, ""iterations"": 160, ""learning_rate"": 0.08}",0.08307734953554238,0.7836243813515656
+extended_low_cost,catboost,"{""depth"": 7, ""iterations"": 240, ""learning_rate"": 0.06}",0.08060333004862068,0.7836551243358867
+extended_low_cost,extra_trees,"{""max_depth"": 14, ""min_samples_leaf"": 3, ""n_estimators"": 160}",0.07168136023137563,0.7710734497525407
+extended_low_cost,extra_trees,"{""max_depth"": null, ""min_samples_leaf"": 2, ""n_estimators"": 240}",0.05562119573039211,0.7367053912802504

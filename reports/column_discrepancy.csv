@@ -1,0 +1,8 @@
+column,status,used_for_modelling
+BIRTHSEX,CSV only; absent from current 345-variable layout,False
+CELSXBRT,CSV only; absent from current 345-variable layout,False
+LNDSXBRT,CSV only; absent from current 345-variable layout,False
+RCSGEND1,CSV only; absent from current 345-variable layout,False
+RCSXBRTH,CSV only; absent from current 345-variable layout,False
+TRNSGNDR,CSV only; absent from current 345-variable layout,False
+RCSBORG1,Current documented layout only; absent from supplied CSV,False

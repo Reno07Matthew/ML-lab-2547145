@@ -1,0 +1,33 @@
+{
+  "rows": 99114,
+  "positive_n": 1050,
+  "negative_n": 98064,
+  "unweighted_positive_pct": 1.0593861613899147,
+  "survey_weighted_positive_pct": 1.1692179128044358,
+  "cholesterol_status_counts": {
+    "not_high": 56107,
+    "never_checked": 16744,
+    "unknown_not_sure": 13971,
+    "high": 12131,
+    "refused": 161
+  },
+  "missing_pct": {
+    "_INCOMG1": 18.9973,
+    "_BMI5": 10.384,
+    "DRNKANY6": 7.2795,
+    "_SMOKER3": 5.528,
+    "DIFFWALK": 4.399,
+    "PHYSHLTH": 1.694,
+    "MENTHLTH": 1.6193,
+    "_EDUCAG": 0.4137,
+    "BPHIGH6": 0.3854,
+    "DIABETE4": 0.1988,
+    "EXERANY2": 0.1927,
+    "_TOTINDA": 0.1927,
+    "CHCKDNY2": 0.1907,
+    "GENHLTH": 0.1856,
+    "_AGE80": 0.0,
+    "_SEX": 0.0,
+    "cholesterol_status": 0.0
+  }
+}

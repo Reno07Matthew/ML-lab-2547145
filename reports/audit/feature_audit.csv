@@ -1,0 +1,17 @@
+feature,feature_group,configurations,description,official_valid_codes,available_in_dataset,usable_n,usable_pct,raw_missing_n,invalid_response_n,effective_missing_n,effective_missing_pct,invalid_codes_observed
+_AGE80,demographic,filter/subgroup only,"Imputed age, collapsed only above 80",18-39,True,99114,100.0,0,0,0,0.0,
+SEXVAR,demographic,filter/subgroup only,Sex of respondent,"1,2",True,99114,100.0,0,0,0,0.0,
+EXERANY2,lifestyle,both,Any exercise in past 30 days,"1,2",True,98923,99.8073,0,191,191,0.1927,7=Don't know/Not sure (n=159); 9=Refused (n=32)
+_SMOKER3,lifestyle,both,Computed four-level smoking status,"1,2,3,4",True,93635,94.472,0,5479,5479,5.528,9=Don't know/Refused/Missing (n=5479)
+DRNKANY6,lifestyle,both,Any alcoholic drink in past 30 days,"1,2",True,91899,92.7205,0,7215,7215,7.2795,7=Don't know/Not sure (n=636); 9=Refused/Missing (n=6579)
+_RFBING6,lifestyle,both,Computed binge-drinking indicator,"1,2",True,90869,91.6813,0,8245,8245,8.3187,9=Don't know/Refused/Missing (n=8245)
+_RFDRHV8,lifestyle,both,Computed heavy-drinking indicator,"1,2",True,90966,91.7792,0,8148,8148,8.2208,9=Don't know/Refused/Missing (n=8148)
+_BMI5,lifestyle/non-invasive,lifestyle_plus_health_history,Computed BMI; two implied decimal places,1-9999,True,88822,89.616,10292,0,10292,10.384,
+GENHLTH,low-cost health status/history,lifestyle_plus_health_history,Self-rated general health,"1,2,3,4,5",True,98930,99.8144,1,183,184,0.1856,7=Don't know/Not sure (n=141); 9=Refused (n=42)
+PHYSHLTH,low-cost health status/history,lifestyle_plus_health_history,Physically unhealthy days in past 30 days,"1-30,88",True,97435,98.306,0,1679,1679,1.694,77=Don't know/Not sure (n=1441); 99=Refused (n=238)
+MENTHLTH,low-cost health status/history,lifestyle_plus_health_history,Mentally unhealthy days in past 30 days,"1-30,88",True,97509,98.3807,0,1605,1605,1.6193,77=Don't know/Not sure (n=1192); 99=Refused (n=413)
+BPHIGH6,low-cost health history,lifestyle_plus_health_history,Ever told blood pressure was high,"1,2,3,4",True,98732,99.6146,0,382,382,0.3854,7=Don't know/Not sure (n=355); 9=Refused (n=27)
+TOLDHI3,low-cost health history,lifestyle_plus_health_history,Ever told cholesterol was high,"1,2",True,68238,68.848,30454,422,30876,31.152,7=Don't know/Not sure (n=407); 9=Refused (n=15)
+CVDSTRK3,low-cost health history,lifestyle_plus_health_history,Ever diagnosed with stroke,"1,2",True,98996,99.8809,0,118,118,0.1191,7=Don't know/Not sure (n=107); 9=Refused (n=11)
+CHCKDNY2,low-cost health history,lifestyle_plus_health_history,Ever told of kidney disease,"1,2",True,98925,99.8093,0,189,189,0.1907,7=Don't know/Not sure (n=182); 9=Refused (n=7)
+DIABETE4,low-cost health history,lifestyle_plus_health_history,Ever told of diabetes,"1,2,3,4",True,98917,99.8012,0,197,197,0.1988,7=Don't know/Not sure (n=188); 9=Refused (n=9)

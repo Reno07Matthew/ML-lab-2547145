@@ -1,0 +1,4 @@
+split,rows,positive_n,negative_n
+train,69379,735,68644
+validation,14867,157,14710
+test,14868,158,14710

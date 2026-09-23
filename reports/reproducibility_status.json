@@ -1,0 +1,12 @@
+{
+  "downstream_artifact_reproduction": "PASS",
+  "model_loading": "PASS",
+  "metrics_workbook_integrity": "PASS",
+  "notebook_execution": "PASS",
+  "streamlit_app_test": "PASS",
+  "fixed_winner": "PASS",
+  "fixed_threshold": 0.7879034938787791,
+  "validation_f2_class_weight_margin": 0.0009037039373887001,
+  "verified_artifact_count": 78,
+  "missing_files": []
+}
