@@ -8,3 +8,9 @@ __pycache__/
 .catboost_info/
 .artifacts/
 *.inspect.ndjson
+archive.zip
+2547145_CIA3.zip
+2547145/
+submission_ready/
+.tmp/
+tmp/
